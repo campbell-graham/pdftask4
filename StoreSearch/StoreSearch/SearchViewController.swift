@@ -36,7 +36,6 @@ class SearchViewController: UIViewController {
         //title and colours
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         title = "Search"
-        searchBar.barTintColor = #colorLiteral(red: 0.08432843536, green: 0.5587885976, blue: 0.4315777421, alpha: 1)
         
         //remove excess rows on table
         tableView.tableFooterView = UIView()

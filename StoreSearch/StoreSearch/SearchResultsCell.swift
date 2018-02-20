@@ -17,6 +17,11 @@ class SearchResultCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        //color changes
+        let selectedView = UIView(frame: .zero)
+        selectedView.backgroundColor = UIColor(red: 20/255, green: 160/255, blue: 160/255, alpha: 0.5)
+        selectedBackgroundView = selectedView
+        
         //add views
         addSubview(nameLabel)
         addSubview(artistNameLabel)

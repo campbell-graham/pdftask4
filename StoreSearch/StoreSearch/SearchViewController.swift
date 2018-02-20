@@ -60,6 +60,10 @@ class SearchViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
             ])
+        
+        
+        //show keyboard
+        searchBar.becomeFirstResponder()
     }
     
     override func didReceiveMemoryWarning() {

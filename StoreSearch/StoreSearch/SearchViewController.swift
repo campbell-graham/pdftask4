@@ -12,6 +12,7 @@ class SearchViewController: UIViewController {
     
     let searchBar = UISearchBar()
     let tableView = UITableView()
+    var searchResults = [String]()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -61,13 +62,17 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print(searchBar.text!)
+        searchResults = []
+        for i in 0...2 {
+            searchResults.append("Fake search #\(i), result: \(searchBar.text!)")
+        }
+        tableView.reloadData()
     }
 }
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+       return searchResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -75,7 +80,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         }
-        cell?.textLabel?.text = String(indexPath.row)
+        cell?.textLabel?.text = searchResults[indexPath.row]
         return cell!
     }
 }

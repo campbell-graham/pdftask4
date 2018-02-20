@@ -29,9 +29,13 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //register cells for tableview
+        tableView.register(SearchResultsCell.self, forCellReuseIdentifier: "searchResultCell")
+        
         //title and colours
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         title = "Search"
+        searchBar.barTintColor = #colorLiteral(red: 0.08432843536, green: 0.5587885976, blue: 0.4315777421, alpha: 1)
         
         //remove excess rows on table
         tableView.tableFooterView = UIView()
@@ -96,20 +100,33 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
-        if cell == nil {
-            cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchResultCell", for: indexPath) as! SearchResultsCell
         if searchResults.count == 0 {
-            cell?.textLabel?.text = "(Nothing Found)"
-            cell?.detailTextLabel?.text = ""
+            cell.artistNameLabel.text = "No Results"
         } else {
             let searchResult = searchResults[indexPath.row]
-            cell?.textLabel?.text = searchResult.name
-            cell?.detailTextLabel?.text = searchResult.artist
+            cell.artworkImageView.image = #imageLiteral(resourceName: "pokeballColored")
+            cell.nameLabel.text = searchResult.name
+            cell.artistNameLabel.text = searchResult.artist
         }
         
-        return cell!
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if searchResults.count == 0 {
+            return nil
+        } else {
+            return indexPath
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200
     }
 }
 

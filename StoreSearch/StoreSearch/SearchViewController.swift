@@ -30,7 +30,8 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         //register cells for tableview
-        tableView.register(SearchResultsCell.self, forCellReuseIdentifier: "searchResultCell")
+        tableView.register(SearchResultCell.self, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
+        tableView.register(NothingFoundCell.self, forCellReuseIdentifier: TableViewCellIdentifiers.nothingFoundCell)
         
         //title and colours
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -66,6 +67,11 @@ class SearchViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    struct TableViewCellIdentifiers {
+        static let searchResultCell = "searchResultsCell"
+        static let nothingFoundCell = "nothingFoundCell"
+    }
 }
 
 extension SearchViewController: UISearchBarDelegate {
@@ -100,17 +106,19 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "searchResultCell", for: indexPath) as! SearchResultsCell
+        //produce a "no results" cell if there are no results found
         if searchResults.count == 0 {
-            cell.artistNameLabel.text = "No Results"
+            let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.nothingFoundCell, for: indexPath) as! NothingFoundCell
+            return cell
+        //else if there are results, produce a search result cell
         } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.searchResultCell, for: indexPath) as! SearchResultCell
             let searchResult = searchResults[indexPath.row]
             cell.artworkImageView.image = #imageLiteral(resourceName: "pokeballColored")
             cell.nameLabel.text = searchResult.name
             cell.artistNameLabel.text = searchResult.artist
+            return cell
         }
-        
-        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -123,10 +131,6 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             return indexPath
         }
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
     }
 }
 

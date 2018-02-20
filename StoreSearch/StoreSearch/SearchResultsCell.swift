@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchResultsCell: UITableViewCell {
+class SearchResultCell: UITableViewCell {
     
     var nameLabel = UILabel()
     var artistNameLabel = UILabel()

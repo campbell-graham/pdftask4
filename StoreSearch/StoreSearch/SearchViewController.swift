@@ -121,6 +121,10 @@ extension SearchViewController: UISearchBarDelegate {
             let url = iTunesURL(searchText: searchBar.text!)
             if let data = performStoreRequest(with: url) {
                 searchResults = parse(data: data)
+                //sort the results alphabetically in ascending order
+                searchResults.sort(by: {result1, result2 in
+                    return result1.name.localizedStandardCompare(result2.name) == .orderedAscending
+                })
             }
             tableView.reloadData()
         }

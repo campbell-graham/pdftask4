@@ -20,8 +20,10 @@ class DetailViewController: UIViewController {
     let genreLabel = UILabel()
     let genreValueLabel = UILabel()
     let priceLabel = UILabel()
+    let searchResult: SearchResult!
     
-    init() {
+    init(searchResult: SearchResult!) {
+        self.searchResult = searchResult
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .custom
         transitioningDelegate = self
@@ -70,11 +72,68 @@ class DetailViewController: UIViewController {
         
         //layout constaints for detail view
         closeButton.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        artistLabel.translatesAutoresizingMaskIntoConstraints = false
+        typeLabel.translatesAutoresizingMaskIntoConstraints = false
+        kindValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        genreLabel.translatesAutoresizingMaskIntoConstraints = false
+        genreValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        priceLabel.translatesAutoresizingMaskIntoConstraints = false
+
         
         NSLayoutConstraint.activate([
+            //image view
+            imageView.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 8),
+            imageView.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 100),
+            imageView.heightAnchor.constraint(equalToConstant: 100),
+            
+            //name label
+            nameLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8 ),
+            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            
+            //artist label
+            artistLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8),
+            artistLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
+            
+            //type label
+            typeLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8),
+            typeLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
+            
+            //kind value label
+            kindValueLabel.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: 16),
+            kindValueLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
+            
+            //genre label
+            genreLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8),
+            genreLabel.topAnchor.constraint(equalTo: typeLabel.bottomAnchor, constant: 3),
+            
+            //genre value label
+            genreValueLabel.leadingAnchor.constraint(equalTo: genreLabel.trailingAnchor, constant: 16),
+            genreValueLabel.topAnchor.constraint(equalTo: kindValueLabel.bottomAnchor, constant: 3),
+            
+            //price label
+            priceLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
+            priceLabel.bottomAnchor.constraint(equalTo: detailView.bottomAnchor, constant: -8),
+            
+            //close button
             closeButton.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 4),
             closeButton.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 2)
         ])
+        
+        populateInformation()
+    }
+    
+    func populateInformation() {
+        imageView.image = #imageLiteral(resourceName: "pokeballColored")
+        nameLabel.text = searchResult.name
+        artistLabel.text = searchResult.artistName
+        typeLabel.text = "Type:"
+        kindValueLabel.text = searchResult.type
+        genreLabel.text = "Genre:"
+        genreValueLabel.text = searchResult.genre
+        priceLabel.text = String(searchResult.price)
     }
     
     @objc func close() {

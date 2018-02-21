@@ -53,6 +53,7 @@ class DetailViewController: UIViewController {
         closeButton.backgroundColor = UIColor(red: 20/255, green: 160/255, blue: 160/255, alpha: 1)
         closeButton.layer.cornerRadius = 5
         priceButton.setTitleColor(view.tintColor, for: .normal)
+        priceButton.addTarget(self, action: #selector(openInStore), for: .touchUpInside)
         
         //label formatting
         nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
@@ -154,7 +155,7 @@ class DetailViewController: UIViewController {
         kindValueLabel.text = searchResult.type
         genreLabel.text = "Genre:"
         genreValueLabel.text = searchResult.genre
-        priceButton.setTitle("$" + String(searchResult.price), for: .normal)
+        priceButton.setTitle(searchResult.price != 0.0 ? "$" + String(searchResult.price) : "Free", for: .normal)
         
         if let largeURL = URL(string: searchResult.imageLarge) {
             downloadTask = imageView.loadImage(url: largeURL)
@@ -163,6 +164,12 @@ class DetailViewController: UIViewController {
     
     @objc func close() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func openInStore() {
+        if let url = URL(string: searchResult.storeURL) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
 
     override func didReceiveMemoryWarning() {

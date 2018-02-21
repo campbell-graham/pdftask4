@@ -146,7 +146,7 @@ class SearchViewController: UIViewController {
                 } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                     if let data = data {
                         self.searchResults = self.parse(data: data)
-                        self.searchResults.sort(by: <)
+                        //self.searchResults.sort(by: <)
                         DispatchQueue.main.async {
                             self.isLoading = false
                             self.tableView.reloadData()

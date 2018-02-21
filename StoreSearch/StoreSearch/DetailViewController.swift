@@ -13,6 +13,16 @@ class DetailViewController: UIViewController {
     let detailView = UIView()
     let closeButton = UIButton()
     
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .custom
+        transitioningDelegate = self
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,9 +34,10 @@ class DetailViewController: UIViewController {
         view.addSubview(detailView)
         
         //set up button
-        closeButton.setTitle("Close", for: .normal)
+        closeButton.setTitle("X", for: .normal)
         closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
-        closeButton.setTitleColor(UIColor(red: 20/255, green: 160/255, blue: 160/255, alpha: 1), for: .normal)
+        closeButton.backgroundColor = UIColor(red: 20/255, green: 160/255, blue: 160/255, alpha: 1)
+        closeButton.layer.cornerRadius = 5
         
         //layout constraints
         detailView.translatesAutoresizingMaskIntoConstraints = false
@@ -68,4 +79,10 @@ class DetailViewController: UIViewController {
     }
     */
 
+}
+
+extension DetailViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return DimmingPresentationController(presentedViewController: presented, presenting: presenting)
+    }
 }

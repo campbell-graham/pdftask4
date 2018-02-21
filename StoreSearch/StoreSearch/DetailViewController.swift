@@ -19,7 +19,7 @@ class DetailViewController: UIViewController {
     let kindValueLabel = UILabel()
     let genreLabel = UILabel()
     let genreValueLabel = UILabel()
-    let priceLabel = UILabel()
+    let priceButton = UIButton()
     let searchResult: SearchResult!
     var downloadTask: URLSessionDownloadTask?
     
@@ -44,11 +44,22 @@ class DetailViewController: UIViewController {
         //add detail view to main view
         view.addSubview(detailView)
         
-        //set up button
+        //button formatting
         closeButton.setTitle("X", for: .normal)
         closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
         closeButton.backgroundColor = UIColor(red: 20/255, green: 160/255, blue: 160/255, alpha: 1)
         closeButton.layer.cornerRadius = 5
+        priceButton.setTitleColor(view.tintColor, for: .normal)
+        
+        //label formatting
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        artistLabel.font = UIFont.systemFont(ofSize: 15)
+        typeLabel.font = UIFont.systemFont(ofSize: 14)
+        kindValueLabel.font = UIFont.systemFont(ofSize: 14)
+        genreLabel.font = UIFont.systemFont(ofSize: 14)
+        genreValueLabel.font = UIFont.systemFont(ofSize: 14)
+        typeLabel.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        genreLabel.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         
         //layout constraints for main view
         detailView.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +80,7 @@ class DetailViewController: UIViewController {
         detailView.addSubview(kindValueLabel)
         detailView.addSubview(genreLabel)
         detailView.addSubview(genreValueLabel)
-        detailView.addSubview(priceLabel)
+        detailView.addSubview(priceButton)
         
         //layout constaints for detail view
         closeButton.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +91,7 @@ class DetailViewController: UIViewController {
         kindValueLabel.translatesAutoresizingMaskIntoConstraints = false
         genreLabel.translatesAutoresizingMaskIntoConstraints = false
         genreValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        priceLabel.translatesAutoresizingMaskIntoConstraints = false
+        priceButton.translatesAutoresizingMaskIntoConstraints = false
 
         
         NSLayoutConstraint.activate([
@@ -93,6 +104,7 @@ class DetailViewController: UIViewController {
             //name label
             nameLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8 ),
             nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            nameLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
             
             //artist label
             artistLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8),
@@ -103,7 +115,7 @@ class DetailViewController: UIViewController {
             typeLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
             
             //kind value label
-            kindValueLabel.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: 16),
+            kindValueLabel.leadingAnchor.constraint(equalTo: genreLabel.trailingAnchor, constant: 16),
             kindValueLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
             
             //genre label
@@ -115,12 +127,14 @@ class DetailViewController: UIViewController {
             genreValueLabel.topAnchor.constraint(equalTo: kindValueLabel.bottomAnchor, constant: 3),
             
             //price label
-            priceLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
-            priceLabel.bottomAnchor.constraint(equalTo: detailView.bottomAnchor, constant: -8),
+            priceButton.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
+            priceButton.bottomAnchor.constraint(equalTo: detailView.bottomAnchor, constant: -4),
             
             //close button
             closeButton.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 4),
-            closeButton.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 2)
+            closeButton.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 2),
+            closeButton.heightAnchor.constraint(equalToConstant: 30),
+            closeButton.widthAnchor.constraint(equalToConstant: 30)
         ])
         
         populateInformation()
@@ -133,7 +147,7 @@ class DetailViewController: UIViewController {
         kindValueLabel.text = searchResult.type
         genreLabel.text = "Genre:"
         genreValueLabel.text = searchResult.genre
-        priceLabel.text = String(searchResult.price)
+        priceButton.setTitle("$" + String(searchResult.price), for: .normal)
         
         if let largeURL = URL(string: searchResult.imageLarge) {
             downloadTask = imageView.loadImage(url: largeURL)

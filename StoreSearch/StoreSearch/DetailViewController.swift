@@ -11,7 +11,15 @@ import UIKit
 class DetailViewController: UIViewController {
     
     let detailView = UIView()
+    let imageView = UIImageView()
     let closeButton = UIButton()
+    let nameLabel = UILabel()
+    let artistLabel = UILabel()
+    let typeLabel = UILabel()
+    let kindValueLabel = UILabel()
+    let genreLabel = UILabel()
+    let genreValueLabel = UILabel()
+    let priceLabel = UILabel()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -39,10 +47,9 @@ class DetailViewController: UIViewController {
         closeButton.backgroundColor = UIColor(red: 20/255, green: 160/255, blue: 160/255, alpha: 1)
         closeButton.layer.cornerRadius = 5
         
-        //layout constraints
+        //layout constraints for main view
         detailView.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        
+      
         NSLayoutConstraint.activate([
             detailView.widthAnchor.constraint(equalToConstant: 240),
             detailView.heightAnchor.constraint(equalToConstant: 240),
@@ -50,8 +57,19 @@ class DetailViewController: UIViewController {
             detailView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
         
-        //add button to detail view
+        //add items to the detail view
         detailView.addSubview(closeButton)
+        detailView.addSubview(imageView)
+        detailView.addSubview(nameLabel)
+        detailView.addSubview(artistLabel)
+        detailView.addSubview(typeLabel)
+        detailView.addSubview(kindValueLabel)
+        detailView.addSubview(genreLabel)
+        detailView.addSubview(genreValueLabel)
+        detailView.addSubview(priceLabel)
+        
+        //layout constaints for detail view
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             closeButton.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 4),

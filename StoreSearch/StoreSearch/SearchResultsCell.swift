@@ -13,6 +13,7 @@ class SearchResultCell: UITableViewCell {
     var nameLabel = UILabel()
     var artistNameLabel = UILabel()
     var artworkImageView = UIImageView()
+    var downloadTask: URLSessionDownloadTask?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,6 +54,20 @@ class SearchResultCell: UITableViewCell {
             ])
         
         
+    }
+    
+    func configure(for result: SearchResult) {
+        nameLabel.text = result.name
+        if result.artistName.isEmpty {
+            artistNameLabel.text = "Unknown"
+        } else {
+            artistNameLabel.text = String(format: "%@ (%@)", result.artistName, result.type)
+        }
+        
+        artworkImageView.image = UIImage(named: "Placeholder")
+        if let smallURL = URL(string: result.imageSmall) {
+            downloadTask = artworkImageView.loadImage(url: smallURL)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

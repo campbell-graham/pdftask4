@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoadingTableViewCell: UITableViewCell {
+class LoadingCell: UITableViewCell {
     
     var loadingLabel: UILabel
     var loadingIndicatorView: UIActivityIndicatorView
@@ -26,7 +26,7 @@ class LoadingTableViewCell: UITableViewCell {
         loadingIndicatorView.color = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
         
         //content setting
-        loadingLabel.text = "Loading..."
+        loadingLabel.text = "Loading... "
         loadingLabel.font = UIFont.systemFont(ofSize: 15)
         
         //adding items to view
@@ -38,7 +38,9 @@ class LoadingTableViewCell: UITableViewCell {
         loadingIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-                loadingLabel.leadingAnchor.constraint(equalTo: centerXAnchor, constant: -((loadingLabel.bounds.width + loadingIndicatorView.bounds.width) / 2)),
+            
+
+                loadingLabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: -10),
                 loadingLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
                 loadingIndicatorView.leadingAnchor.constraint(equalTo: loadingLabel.trailingAnchor),
                 loadingIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor)

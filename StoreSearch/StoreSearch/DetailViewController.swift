@@ -21,6 +21,7 @@ class DetailViewController: UIViewController {
     let genreValueLabel = UILabel()
     let priceLabel = UILabel()
     let searchResult: SearchResult!
+    var downloadTask: URLSessionDownloadTask?
     
     init(searchResult: SearchResult!) {
         self.searchResult = searchResult
@@ -126,7 +127,6 @@ class DetailViewController: UIViewController {
     }
     
     func populateInformation() {
-        imageView.image = #imageLiteral(resourceName: "pokeballColored")
         nameLabel.text = searchResult.name
         artistLabel.text = searchResult.artistName
         typeLabel.text = "Type:"
@@ -134,6 +134,10 @@ class DetailViewController: UIViewController {
         genreLabel.text = "Genre:"
         genreValueLabel.text = searchResult.genre
         priceLabel.text = String(searchResult.price)
+        
+        if let largeURL = URL(string: searchResult.imageLarge) {
+            downloadTask = imageView.loadImage(url: largeURL)
+        }
     }
     
     @objc func close() {

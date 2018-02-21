@@ -121,15 +121,23 @@ extension SearchViewController: UISearchBarDelegate {
             searchBar.resignFirstResponder()
             isLoading = true
             tableView.reloadData()
-//            hasSearched = true
-//            searchResults = []
-//            let url = iTunesURL(searchText: searchBar.text!)
-//            if let data = performStoreRequest(with: url) {
-//                searchResults = parse(data: data)
-//                //sort the results alphabetically in ascending order, uses operator overloading
-//                searchResults.sort(by: <)            }
-//            isLoading = false
-//            tableView.reloadData()
+            hasSearched = true
+            searchResults = []
+            
+            let queue = DispatchQueue.global()
+            let url = self.iTunesURL(searchText: searchBar.text!)
+            queue.async {
+                if let data = self.performStoreRequest(with: url) {
+                    self.searchResults = self.parse(data: data)
+                    //sort the results alphabetically in ascending order, uses operator overloading
+                    self.searchResults.sort(by: <)
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.tableView.reloadData()
+                    }
+                    return
+                }
+            }
         }
     }
     

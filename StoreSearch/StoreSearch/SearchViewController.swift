@@ -34,7 +34,7 @@ class SearchViewController: UIViewController {
         tableView.register(SearchResultCell.self, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
         tableView.register(NothingFoundCell.self, forCellReuseIdentifier: TableViewCellIdentifiers.nothingFoundCell)
         tableView.register(LoadingCell.self, forCellReuseIdentifier: TableViewCellIdentifiers.loadingCell)
-
+        
         //title and colours
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         title = "Search"
@@ -86,16 +86,6 @@ class SearchViewController: UIViewController {
         return url!
     }
     
-    func performStoreRequest(with url: URL) -> Data? {
-        do {
-            return try Data(contentsOf: url)
-        } catch {
-            print("Download Error: \(error.localizedDescription)")
-            showNetworkError()
-            return nil
-        }
-    }
-    
     func parse(data: Data) -> [SearchResult] {
         do {
             let decoder = JSONDecoder()
@@ -124,20 +114,28 @@ extension SearchViewController: UISearchBarDelegate {
             hasSearched = true
             searchResults = []
             
-            let queue = DispatchQueue.global()
-            let url = self.iTunesURL(searchText: searchBar.text!)
-            queue.async {
-                if let data = self.performStoreRequest(with: url) {
-                    self.searchResults = self.parse(data: data)
-                    //sort the results alphabetically in ascending order, uses operator overloading
-                    self.searchResults.sort(by: <)
-                    DispatchQueue.main.async {
-                        self.isLoading = false
-                        self.tableView.reloadData()
+            let url = iTunesURL(searchText: searchBar.text!)
+            
+            let session = URLSession.shared
+            
+            let dataTask = session.dataTask(with: url, completionHandler: { data, response, error in
+                if let error = error {
+                    print("Failure! \(error)")
+                } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    if let data = data {
+                        self.searchResults = self.parse(data: data)
+                        self.searchResults.sort(by: <)
+                        DispatchQueue.main.async {
+                            self.isLoading = false
+                            self.tableView.reloadData()
+                        }
+                        return
                     }
-                    return
+                } else {
+                    print("Failure! \(response!)")
                 }
-            }
+            })
+            dataTask.resume()
         }
     }
     
@@ -167,22 +165,22 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             spinner.startAnimating()
             return cell
         } else
-        //produce a "no results" cell if there are no results found
-        if searchResults.count == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.nothingFoundCell, for: indexPath) as! NothingFoundCell
-            return cell
-        //else if there are results, produce a search result cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.searchResultCell, for: indexPath) as! SearchResultCell
-            let searchResult = searchResults[indexPath.row]
-            cell.artworkImageView.image = #imageLiteral(resourceName: "pokeballColored")
-            cell.nameLabel.text = searchResult.name
-            if searchResult.artistName.isEmpty {
-                cell.artistNameLabel.text = "Unknown"
+            //produce a "no results" cell if there are no results found
+            if searchResults.count == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.nothingFoundCell, for: indexPath) as! NothingFoundCell
+                return cell
+                //else if there are results, produce a search result cell
             } else {
-                cell.artistNameLabel.text = String(format: "%@ (%@)", searchResult.artistName, searchResult.type)
-            }
-            return cell
+                let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.searchResultCell, for: indexPath) as! SearchResultCell
+                let searchResult = searchResults[indexPath.row]
+                cell.artworkImageView.image = #imageLiteral(resourceName: "pokeballColored")
+                cell.nameLabel.text = searchResult.name
+                if searchResult.artistName.isEmpty {
+                    cell.artistNameLabel.text = "Unknown"
+                } else {
+                    cell.artistNameLabel.text = String(format: "%@ (%@)", searchResult.artistName, searchResult.type)
+                }
+                return cell
         }
     }
     

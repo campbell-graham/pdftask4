@@ -33,7 +33,8 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         //segmented control set up
-        segmentedControl = UISegmentedControl(items: ["Any", "Music", "Software", "E-Books"])
+        segmentedControl = UISegmentedControl(items: ["All", "Music", "Software", "E-Books"])
+        segmentedControl.addTarget(self, action: #selector(performSearch), for: .valueChanged)
         
         //register cells for tableview
         tableView.register(SearchResultCell.self, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
@@ -116,10 +117,8 @@ class SearchViewController: UIViewController {
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
-}
-
-extension SearchViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    
+    @objc func performSearch() {
         if !searchBar.text!.isEmpty {
             searchBar.resignFirstResponder()
             dataTask?.cancel()
@@ -154,10 +153,17 @@ extension SearchViewController: UISearchBarDelegate {
                     self.tableView.reloadData()
                     self.showNetworkError()
                 }
-
+                
             })
             dataTask?.resume()
         }
+    }
+}
+
+extension SearchViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        performSearch()
     }
     
     func position(for bar: UIBarPositioning) -> UIBarPosition {

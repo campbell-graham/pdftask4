@@ -12,6 +12,7 @@ class SearchViewController: UIViewController {
     
     let searchBar = UISearchBar()
     let tableView = UITableView()
+    var segmentedControl: UISegmentedControl!
     var searchResults = [SearchResult]()
     var hasSearched = false
     var isLoading = false
@@ -31,6 +32,9 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //segmented control set up
+        segmentedControl = UISegmentedControl(items: ["Any", "Music", "Software", "E-Books"])
+        
         //register cells for tableview
         tableView.register(SearchResultCell.self, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
         tableView.register(NothingFoundCell.self, forCellReuseIdentifier: TableViewCellIdentifiers.nothingFoundCell)
@@ -46,22 +50,30 @@ class SearchViewController: UIViewController {
         //add items to view
         view.addSubview(searchBar)
         view.addSubview(tableView)
+        view.addSubview(segmentedControl)
         
         //visual constraints
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
+            
             //search bar
             searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             
+            //segmentedControl
+            segmentedControl.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 8),
+            segmentedControl.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            segmentedControl.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            
             //tableview
-            tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 8),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
         
         

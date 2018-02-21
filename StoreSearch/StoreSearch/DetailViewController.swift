@@ -37,6 +37,9 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //round the corners of the detail view
+        detailView.layer.cornerRadius = 10
+        
         //background colours
         view.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
         detailView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.95)
@@ -53,7 +56,9 @@ class DetailViewController: UIViewController {
         
         //label formatting
         nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        nameLabel.numberOfLines = 3
         artistLabel.font = UIFont.systemFont(ofSize: 15)
+        artistLabel.numberOfLines = 2
         typeLabel.font = UIFont.systemFont(ofSize: 14)
         kindValueLabel.font = UIFont.systemFont(ofSize: 14)
         genreLabel.font = UIFont.systemFont(ofSize: 14)
@@ -66,7 +71,7 @@ class DetailViewController: UIViewController {
       
         NSLayoutConstraint.activate([
             detailView.widthAnchor.constraint(equalToConstant: 240),
-            detailView.heightAnchor.constraint(equalToConstant: 240),
+           // detailView.heightAnchor.constraint(equalToConstant: 240),
             detailView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             detailView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
@@ -108,6 +113,7 @@ class DetailViewController: UIViewController {
             
             //artist label
             artistLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8),
+            artistLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
             artistLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
             
             //type label
@@ -128,6 +134,7 @@ class DetailViewController: UIViewController {
             
             //price label
             priceButton.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
+            priceButton.topAnchor.constraint(equalTo: genreValueLabel.bottomAnchor, constant: 8),
             priceButton.bottomAnchor.constraint(equalTo: detailView.bottomAnchor, constant: -4),
             
             //close button

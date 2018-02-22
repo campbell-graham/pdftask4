@@ -13,6 +13,7 @@ class LandscapeViewController: UIViewController {
     let scrollView = UIScrollView()
     let pageControl = UIPageControl()
     var searchResults = [SearchResult]()
+    private var downloads = [URLSessionDownloadTask]()
     private var firstTime = true
     
     override func viewDidLoad() {
@@ -150,6 +151,13 @@ class LandscapeViewController: UIViewController {
                     } }
             }
             task.resume()
+            downloads.append(task)
+        }
+    }
+    
+    deinit {
+        for task in downloads {
+            task.cancel()
         }
     }
     

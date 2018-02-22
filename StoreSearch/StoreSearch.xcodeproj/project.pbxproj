@@ -20,6 +20,7 @@
 		3783D56E203B898B00E50F82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3783D56C203B898B00E50F82 /* LaunchScreen.storyboard */; };
 		37A03229203E347C00563E65 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A03228203E347C00563E65 /* GradientView.swift */; };
 		37A0322B203E3FEB00563E65 /* LandscapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A0322A203E3FEB00563E65 /* LandscapeViewController.swift */; };
+		37A0322D203E793500563E65 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A0322C203E793500563E65 /* Search.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		3783D56F203B898B00E50F82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37A03228203E347C00563E65 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		37A0322A203E3FEB00563E65 /* LandscapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeViewController.swift; sourceTree = "<group>"; };
+		37A0322C203E793500563E65 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				3764D3A1203D3FAB0005391F /* DimmingPresentationController.swift */,
 				37A03228203E347C00563E65 /* GradientView.swift */,
 				37A0322A203E3FEB00563E65 /* LandscapeViewController.swift */,
+				37A0322C203E793500563E65 /* Search.swift */,
 			);
 			path = StoreSearch;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 				37368EF2203BA25E0045BF78 /* SearchResult.swift in Sources */,
 				37368EF6203BC1340045BF78 /* NothingFoundCell.swift in Sources */,
 				3783D564203B898B00E50F82 /* AppDelegate.swift in Sources */,
+				37A0322D203E793500563E65 /* Search.swift in Sources */,
 				3764D3A0203D35A40005391F /* DetailViewController.swift in Sources */,
 				3764D3A2203D3FAB0005391F /* DimmingPresentationController.swift in Sources */,
 			);

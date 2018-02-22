@@ -20,10 +20,13 @@ class LandscapeViewController: UIViewController {
         view.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         
         //page view setup
-        pageControl.numberOfPages = 3
+        pageControl.numberOfPages = 0
+        pageControl.addTarget(self, action: #selector(pageChanged(_:)), for: .valueChanged)
         
         //scroll view setup
         scrollView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        scrollView.isPagingEnabled = true
+        scrollView.delegate = self
         
         
         
@@ -53,7 +56,7 @@ class LandscapeViewController: UIViewController {
             ])
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewDidLayoutSubviews() {
         if firstTime {
             firstTime = false
             tileButtons(searchResults)
@@ -122,7 +125,13 @@ class LandscapeViewController: UIViewController {
         scrollView.contentSize = CGSize(
             width: CGFloat(numPages) * scrollView.bounds.width,
             height: scrollView.bounds.height)
-        print("Number of pages: \(numPages)")
+        pageControl.numberOfPages = numPages
+        pageControl.currentPage = 0
+    }
+    
+    @objc func pageChanged(_ sender: UIPageControl) {
+        scrollView.contentOffset = CGPoint(
+            x: scrollView.bounds.size.width * CGFloat(sender.currentPage), y: 0)
     }
     
     override func didReceiveMemoryWarning() {
@@ -141,4 +150,12 @@ class LandscapeViewController: UIViewController {
      }
      */
     
+}
+
+extension LandscapeViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let width = scrollView.bounds.size.width
+        let page = Int((scrollView.contentOffset.x + width / 2) / width)
+        pageControl.currentPage = page
+    }
 }

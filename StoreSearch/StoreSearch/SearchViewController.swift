@@ -17,6 +17,7 @@ class SearchViewController: UIViewController {
     var hasSearched = false
     var isLoading = false
     var dataTask: URLSessionDataTask?
+    var landscapeVC: LandscapeViewController?
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -81,6 +82,43 @@ class SearchViewController: UIViewController {
         
         //show keyboard
         searchBar.becomeFirstResponder()
+    }
+    
+    override func willTransition(
+        to newCollection: UITraitCollection,
+        with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        switch newCollection.verticalSizeClass {
+        case .compact:
+            showLandscape(with: coordinator)
+        case .regular, .unspecified:
+            hideLandscape(with: coordinator)
+        }
+    }
+    
+    func showLandscape(with coordinator:
+        // 1
+        UIViewControllerTransitionCoordinator) {
+        guard landscapeVC == nil else { return }
+        // 2
+        landscapeVC = LandscapeViewController()
+        if let controller = landscapeVC {
+            // 3
+            controller.view.frame = view.bounds
+            // 4
+            view.addSubview(controller.view)
+            addChildViewController(controller)
+            controller.didMove(toParentViewController: self)
+        }
+    }
+    
+    func hideLandscape(with coordinator: UIViewControllerTransitionCoordinator) {
+        if let controller = landscapeVC {
+            controller.willMove(toParentViewController: nil)
+            controller.view.removeFromSuperview()
+            controller.removeFromParentViewController()
+            landscapeVC = nil
+        }
     }
     
     override func didReceiveMemoryWarning() {

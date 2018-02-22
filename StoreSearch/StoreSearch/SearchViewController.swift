@@ -96,28 +96,32 @@ class SearchViewController: UIViewController {
         }
     }
     
-    func showLandscape(with coordinator:
-        // 1
-        UIViewControllerTransitionCoordinator) {
+    func showLandscape(with coordinator: UIViewControllerTransitionCoordinator) {
         guard landscapeVC == nil else { return }
-        // 2
         landscapeVC = LandscapeViewController()
         if let controller = landscapeVC {
-            // 3
             controller.view.frame = view.bounds
-            // 4
+            controller.view.alpha = 0
             view.addSubview(controller.view)
             addChildViewController(controller)
-            controller.didMove(toParentViewController: self)
+            coordinator.animate(alongsideTransition: { _ in
+                controller.view.alpha = 1
+            }, completion: { _ in
+                controller.didMove(toParentViewController: self)
+            })
         }
     }
     
     func hideLandscape(with coordinator: UIViewControllerTransitionCoordinator) {
         if let controller = landscapeVC {
             controller.willMove(toParentViewController: nil)
-            controller.view.removeFromSuperview()
-            controller.removeFromParentViewController()
-            landscapeVC = nil
+            coordinator.animate(alongsideTransition: { _ in
+                controller.view.alpha = 0
+            }, completion: { _ in
+                controller.view.removeFromSuperview()
+                controller.removeFromParentViewController()
+                self.landscapeVC = nil
+            })
         }
     }
     

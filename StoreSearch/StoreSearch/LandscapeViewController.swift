@@ -22,12 +22,13 @@ class LandscapeViewController: UIViewController {
         //page view setup
         pageControl.numberOfPages = 0
         pageControl.addTarget(self, action: #selector(pageChanged(_:)), for: .valueChanged)
+        pageControl.pageIndicatorTintColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
+        pageControl.currentPageIndicatorTintColor = UIColor(red: 10/255, green: 80/255, blue: 80/255, alpha: 1)
         
         //scroll view setup
-        scrollView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        scrollView.backgroundColor = #colorLiteral(red: 0.8542988579, green: 0.8542988579, blue: 0.8542988579, alpha: 1)
         scrollView.isPagingEnabled = true
         scrollView.delegate = self
-        
         
         
         // Do any additional setup after loading the view.
@@ -99,12 +100,12 @@ class LandscapeViewController: UIViewController {
         var column = 0
         var x = marginX
         
-        for (index, result) in searchResults.enumerated() {
+        for (result) in searchResults {
             // 1
-            let button = UIButton(type: .system)
-            button.backgroundColor = UIColor.white
-            button.setTitle("\(index)", for: .normal)
-            // 2
+            let button = UIButton(type: .custom)
+            button.layer.cornerRadius = 15
+            button.backgroundColor = #colorLiteral(red: 0.1636788168, green: 0.1772186318, blue: 0.1968886197, alpha: 1)
+            downloadImage(for: result, andPlaceOn: button)
             button.frame = CGRect(x: x + paddingHorz,
                                   y: marginY + CGFloat(row)*itemHeight + paddingVert,
                                   width: buttonWidth, height: buttonHeight)
@@ -132,6 +133,24 @@ class LandscapeViewController: UIViewController {
     @objc func pageChanged(_ sender: UIPageControl) {
         scrollView.contentOffset = CGPoint(
             x: scrollView.bounds.size.width * CGFloat(sender.currentPage), y: 0)
+    }
+    
+    private func downloadImage(for searchResult: SearchResult,
+                               andPlaceOn button: UIButton) {
+        if let url = URL(string: searchResult.imageSmall) {
+            let task = URLSession.shared.downloadTask(with: url) {
+                [weak button] url, response, error in
+                if error == nil, let url = url,
+                    let data = try? Data(contentsOf: url),
+                    let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        if let button = button {
+                            button.setImage(image, for: .normal)
+                        }
+                    } }
+            }
+            task.resume()
+        }
     }
     
     override func didReceiveMemoryWarning() {

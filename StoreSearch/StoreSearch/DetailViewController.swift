@@ -61,10 +61,10 @@ class DetailViewController: UIViewController {
         artistLabel.font = UIFont.systemFont(ofSize: 15)
         artistLabel.numberOfLines = 2
         typeLabel.font = UIFont.systemFont(ofSize: 14)
-        typeLabel.setContentHuggingPriority(.required, for: .horizontal)
+       // typeLabel.setContentHuggingPriority(.required, for: .horizontal)
         kindValueLabel.font = UIFont.systemFont(ofSize: 14)
         genreLabel.font = UIFont.systemFont(ofSize: 14)
-        genreLabel.setContentHuggingPriority(.required, for: .horizontal)
+        //genreLabel.setContentHuggingPriority(.required, for: .horizontal)
         genreValueLabel.font = UIFont.systemFont(ofSize: 14)
         typeLabel.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         genreLabel.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
@@ -119,20 +119,20 @@ class DetailViewController: UIViewController {
             nameLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
             
             //artist label
-            artistLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8),
+            artistLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             artistLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
             artistLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
             
             //type label
-            typeLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8),
+            typeLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             typeLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
             
             
             
             //genre label
-            genreLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8),
+            genreLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             genreLabel.topAnchor.constraint(equalTo: typeLabel.bottomAnchor, constant: 3),
-            
+            genreLabel.trailingAnchor.constraint(equalTo: typeLabel.trailingAnchor),
             
             
             //price label
@@ -144,12 +144,10 @@ class DetailViewController: UIViewController {
             closeButton.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 4),
             closeButton.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 2),
             closeButton.heightAnchor.constraint(equalToConstant: 30),
-            closeButton.widthAnchor.constraint(equalToConstant: 30)
-            ])
-        
-        NSLayoutConstraint.activate([
+            closeButton.widthAnchor.constraint(equalToConstant: 30),
+            
             //kind value label
-            kindValueLabel.leadingAnchor.constraint(equalTo: typeLabel.bounds.width > genreLabel.bounds.width ? typeLabel.trailingAnchor : genreLabel.trailingAnchor, constant: 16),
+            kindValueLabel.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: 16),
             kindValueLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
             kindValueLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
             
@@ -157,13 +155,13 @@ class DetailViewController: UIViewController {
             genreValueLabel.leadingAnchor.constraint(equalTo: kindValueLabel.leadingAnchor),
             genreValueLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
             genreValueLabel.topAnchor.constraint(equalTo: kindValueLabel.bottomAnchor, constant: 3),
-            ])
+        ])
     }
     
     func populateInformation() {
         nameLabel.text = searchResult.name
         artistLabel.text = searchResult.artistName
-        typeLabel.text = "Type:"
+        typeLabel.text = "Typeaaahhhhhhhhhhhh:"
         kindValueLabel.text = searchResult.type
         genreLabel.text = "Genre:"
         genreValueLabel.text = searchResult.genre

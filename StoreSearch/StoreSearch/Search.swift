@@ -35,7 +35,7 @@ class Search {
                 if let httpResponse = response as? HTTPURLResponse,
                     httpResponse.statusCode == 200, let data = data {
                     self.searchResults = self.parse(data: data)
-                    self.searchResults.sort(by: <)
+                    //self.searchResults.sort(by: <)
                     print("Success!")
                     self.isLoading = false
                     success = true

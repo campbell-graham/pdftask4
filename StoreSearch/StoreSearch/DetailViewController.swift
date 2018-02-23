@@ -72,12 +72,12 @@ class DetailViewController: UIViewController {
         //layout constraints for main view
         detailView.translatesAutoresizingMaskIntoConstraints = false
       
-        NSLayoutConstraint.activate([
-            detailView.widthAnchor.constraint(equalToConstant: 240),
-           // detailView.heightAnchor.constraint(equalToConstant: 240),
-            detailView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            detailView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
+//        NSLayoutConstraint.activate([
+//            detailView.widthAnchor.constraint(equalToConstant: 240),
+//           // detailView.heightAnchor.constraint(equalToConstant: 240),
+//            detailView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            detailView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+//        ])
         
         //add items to the detail view
         detailView.addSubview(closeButton)
@@ -95,6 +95,9 @@ class DetailViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         //layout constaints for detail view
+        typeLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        genreLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -105,63 +108,103 @@ class DetailViewController: UIViewController {
         genreValueLabel.translatesAutoresizingMaskIntoConstraints = false
         priceButton.translatesAutoresizingMaskIntoConstraints = false
         
+        let views: [String: Any] = [
+            "closeButton" : closeButton,
+            "imageView" : imageView,
+            "nameLabel" : nameLabel,
+            "artistLabel" : artistLabel,
+            "typeLabel" : typeLabel,
+            "kindValueLabel" : kindValueLabel,
+            "genreLabel" : genreLabel,
+            "genreValueLabel" : genreValueLabel,
+            "priceButton" : priceButton
+            ]
+
         
-        NSLayoutConstraint.activate([
-            //image view
-            imageView.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 8),
-            imageView.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 100),
-            imageView.heightAnchor.constraint(equalToConstant: 100),
-            
-            //name label
-            nameLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8 ),
-            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
-            nameLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
-            
-            //artist label
-            artistLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            artistLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
-            artistLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
-            
-            //type label
-            typeLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            typeLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
-            
-            
-            
-            //genre label
-            genreLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            genreLabel.topAnchor.constraint(equalTo: typeLabel.bottomAnchor, constant: 3),
-            genreLabel.trailingAnchor.constraint(equalTo: typeLabel.trailingAnchor),
-            
-            
-            //price label
-            priceButton.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
-            priceButton.topAnchor.constraint(equalTo: genreValueLabel.bottomAnchor, constant: 8),
-            priceButton.bottomAnchor.constraint(equalTo: detailView.bottomAnchor, constant: -4),
-            
-            //close button
-            closeButton.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 4),
-            closeButton.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 2),
-            closeButton.heightAnchor.constraint(equalToConstant: 30),
-            closeButton.widthAnchor.constraint(equalToConstant: 30),
-            
-            //kind value label
-            kindValueLabel.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: 16),
-            kindValueLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
-            kindValueLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
-            
-            //genre value label
-            genreValueLabel.leadingAnchor.constraint(equalTo: kindValueLabel.leadingAnchor),
-            genreValueLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
-            genreValueLabel.topAnchor.constraint(equalTo: kindValueLabel.bottomAnchor, constant: 3),
-        ])
+        detailView.layoutMargins = UIEdgeInsetsMake(20, 20, 20, 20)
+        
+        var constraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[nameLabel]-[artistLabel]", options: [.alignAllLeading, .alignAllTrailing], metrics: nil, views: views)
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[nameLabel]-|", options: [], metrics: nil, views: views)
+        
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[typeLabel]-[genreLabel]", options: [.alignAllLeading, .alignAllTrailing], metrics: nil, views: views)
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[kindValueLabel]-[genreValueLabel]", options: [.alignAllLeading, .alignAllTrailing], metrics: nil, views: views)
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[typeLabel]-[kindValueLabel]-|", options: [.alignAllTop], metrics: nil, views: views)
+        
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[imageView(100)]-[nameLabel]", options: [.alignAllCenterX], metrics: nil, views: views)
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[artistLabel]-[typeLabel]", options: [], metrics: nil, views: views)
+        
+        constraints += [
+            detailView.widthAnchor.constraint(equalToConstant: 240.0),
+            detailView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            detailView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
+            closeButton.topAnchor.constraint(equalTo: detailView.layoutMarginsGuide.topAnchor),
+            closeButton.leadingAnchor.constraint(equalTo: detailView.layoutMarginsGuide.leadingAnchor),
+            priceButton.bottomAnchor.constraint(equalTo: detailView.layoutMarginsGuide.bottomAnchor),
+            priceButton.trailingAnchor.constraint(equalTo: detailView.layoutMarginsGuide.trailingAnchor),
+            priceButton.topAnchor.constraint(equalTo: genreValueLabel.bottomAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+        
+//
+//
+//        NSLayoutConstraint.activate([
+//            //image view
+//            imageView.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 8),
+//            imageView.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+//            imageView.widthAnchor.constraint(equalToConstant: 100),
+//            imageView.heightAnchor.constraint(equalToConstant: 100),
+//
+//            //name label
+//            nameLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8 ),
+//            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+//            nameLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
+//
+//            //artist label
+//            artistLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+//            artistLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
+//            artistLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
+//
+//            //type label
+//            typeLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+//            typeLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
+//
+//
+//
+//            //genre label
+//            genreLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+//            genreLabel.topAnchor.constraint(equalTo: typeLabel.bottomAnchor, constant: 3),
+//            genreLabel.trailingAnchor.constraint(equalTo: typeLabel.trailingAnchor),
+//
+//
+//            //price label
+//            priceButton.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
+//            priceButton.topAnchor.constraint(equalTo: genreValueLabel.bottomAnchor, constant: 8),
+//            priceButton.bottomAnchor.constraint(equalTo: detailView.bottomAnchor, constant: -4),
+//
+//            //close button
+//            closeButton.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 4),
+//            closeButton.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 2),
+//            closeButton.heightAnchor.constraint(equalToConstant: 30),
+//            closeButton.widthAnchor.constraint(equalToConstant: 30),
+//
+//            //kind value label
+//            kindValueLabel.leadingAnchor.constraint(equalTo: typeLabel.trailingAnchor, constant: 16),
+//            kindValueLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
+//            kindValueLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
+//
+//            //genre value label
+//            genreValueLabel.leadingAnchor.constraint(equalTo: kindValueLabel.leadingAnchor),
+//            genreValueLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
+//            genreValueLabel.topAnchor.constraint(equalTo: kindValueLabel.bottomAnchor, constant: 3),
+//        ])
     }
     
     func populateInformation() {
         nameLabel.text = searchResult.name
         artistLabel.text = searchResult.artistName
-        typeLabel.text = "Typeaaahhhhhhhhhhhh:"
+        typeLabel.text = "Type:"
         kindValueLabel.text = searchResult.type
         genreLabel.text = "Genre:"
         genreValueLabel.text = searchResult.genre

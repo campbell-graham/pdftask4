@@ -226,6 +226,13 @@ class DetailViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch: UITouch? = touches.first
+        if touch?.view != detailView {
+            close()
+        }
+    }
 }
 
 extension DetailViewController: UIViewControllerTransitioningDelegate {

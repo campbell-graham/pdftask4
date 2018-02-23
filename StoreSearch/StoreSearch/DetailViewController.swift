@@ -61,8 +61,10 @@ class DetailViewController: UIViewController {
         artistLabel.font = UIFont.systemFont(ofSize: 15)
         artistLabel.numberOfLines = 2
         typeLabel.font = UIFont.systemFont(ofSize: 14)
+        typeLabel.setContentHuggingPriority(.required, for: .horizontal)
         kindValueLabel.font = UIFont.systemFont(ofSize: 14)
         genreLabel.font = UIFont.systemFont(ofSize: 14)
+        genreLabel.setContentHuggingPriority(.required, for: .horizontal)
         genreValueLabel.font = UIFont.systemFont(ofSize: 14)
         typeLabel.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         genreLabel.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
@@ -88,6 +90,10 @@ class DetailViewController: UIViewController {
         detailView.addSubview(genreValueLabel)
         detailView.addSubview(priceButton)
         
+        populateInformation()
+    }
+    
+    override func viewWillLayoutSubviews() {
         //layout constaints for detail view
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -98,7 +104,7 @@ class DetailViewController: UIViewController {
         genreLabel.translatesAutoresizingMaskIntoConstraints = false
         genreValueLabel.translatesAutoresizingMaskIntoConstraints = false
         priceButton.translatesAutoresizingMaskIntoConstraints = false
-
+        
         
         NSLayoutConstraint.activate([
             //image view
@@ -121,17 +127,13 @@ class DetailViewController: UIViewController {
             typeLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8),
             typeLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
             
-            //kind value label
-            kindValueLabel.leadingAnchor.constraint(equalTo: genreLabel.trailingAnchor, constant: 16),
-            kindValueLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
+            
             
             //genre label
             genreLabel.leadingAnchor.constraint(equalTo: detailView.leadingAnchor, constant: 8),
             genreLabel.topAnchor.constraint(equalTo: typeLabel.bottomAnchor, constant: 3),
             
-            //genre value label
-            genreValueLabel.leadingAnchor.constraint(equalTo: genreLabel.trailingAnchor, constant: 16),
-            genreValueLabel.topAnchor.constraint(equalTo: kindValueLabel.bottomAnchor, constant: 3),
+            
             
             //price label
             priceButton.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
@@ -143,9 +145,19 @@ class DetailViewController: UIViewController {
             closeButton.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 2),
             closeButton.heightAnchor.constraint(equalToConstant: 30),
             closeButton.widthAnchor.constraint(equalToConstant: 30)
-        ])
+            ])
         
-        populateInformation()
+        NSLayoutConstraint.activate([
+            //kind value label
+            kindValueLabel.leadingAnchor.constraint(equalTo: typeLabel.bounds.width > genreLabel.bounds.width ? typeLabel.trailingAnchor : genreLabel.trailingAnchor, constant: 16),
+            kindValueLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
+            kindValueLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 3),
+            
+            //genre value label
+            genreValueLabel.leadingAnchor.constraint(equalTo: kindValueLabel.leadingAnchor),
+            genreValueLabel.trailingAnchor.constraint(equalTo: detailView.trailingAnchor, constant: -8),
+            genreValueLabel.topAnchor.constraint(equalTo: kindValueLabel.bottomAnchor, constant: 3),
+            ])
     }
     
     func populateInformation() {

@@ -121,15 +121,13 @@ class DetailViewController: UIViewController {
             ]
 
         
-        detailView.layoutMargins = UIEdgeInsetsMake(20, 20, 20, 20)
+//        detailView.layoutMargins = UIEdgeInsetsMake(20, 20, 20, 20)
         
         var constraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[nameLabel]-[artistLabel]", options: [.alignAllLeading, .alignAllTrailing], metrics: nil, views: views)
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[nameLabel]-|", options: [], metrics: nil, views: views)
-        
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[typeLabel]-[genreLabel]", options: [.alignAllLeading, .alignAllTrailing], metrics: nil, views: views)
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[kindValueLabel]-[genreValueLabel]", options: [.alignAllLeading, .alignAllTrailing], metrics: nil, views: views)
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[typeLabel]-[kindValueLabel]-|", options: [.alignAllTop], metrics: nil, views: views)
-        
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[imageView(100)]-[nameLabel]", options: [.alignAllCenterX], metrics: nil, views: views)
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[artistLabel]-[typeLabel]", options: [], metrics: nil, views: views)
         
